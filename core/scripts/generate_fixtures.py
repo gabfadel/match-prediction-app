@@ -1,5 +1,7 @@
 # from core.models import Fixture, Team
 from django.utils import timezone
+from core.models import Team, Fixture
+
 
 # Register your models here.
 def run():
@@ -19,4 +21,10 @@ def run():
         "PSG",
         "Porto"
     ]
+    for team in teams:
+        Team.objects.get_or_create(name=team)
 
+    teams= Team.objects.all()
+
+    for team1, team2 in zip(teams[::2], teams[1::2]):
+        Fixture.objects.get_or_create(home_team=team1, away_team=team2)

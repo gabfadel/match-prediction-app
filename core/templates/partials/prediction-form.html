@@ -1,0 +1,29 @@
+<form style="display:inline;"
+      x-ref="form"
+      hx-post="{% url 'submit_prediction' fixture.pk %}"
+      hx-trigger="submit from:#predict-fixture-{{ fixture.pk }}"
+      hx-target="closest .prediction-container"
+      hx-swap="outer-html">
+    {% csrf_token %}
+    <input type="number"
+           min="0"
+           max="30"
+           class="prediction-input"
+           name="home_goals"
+           x-model="homeGoals"
+           value="{{ prediction.home_goals|default:0 }}"
+           @keyup="submittable = $el.value.length && $el.nextElementSibling.value.length"
+           @change="submittable = $el.value.length && $el.nextElementSibling.value.length"
+           required />
+    <input type="number"
+           min="0"
+           max="30"
+           class="prediction-input"
+           name="away_goals"
+           x-model="awayGoals"
+           value="{{ prediction.away_goals|default:0 }}"
+           @keyup="submittable = $el.value.length && $el.previousElementSibling.value.length"
+           @change="submittable = $el.value.length && $el.previousElementSibling.value.length"
+           required />
+    <button type="submit" id="predict-fixture-{{ fixture.pk }}">Submit</button>
+</form>
